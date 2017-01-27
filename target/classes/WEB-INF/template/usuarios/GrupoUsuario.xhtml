@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:dataTable value="#{cadastroUsuariosBean.usuario.grupos}" id="gruposTable" 
+                 var="grupo" emptyMessage="Nenhum Grupo Selecionado.">
+
+        <p:column headerText="Grupo">
+            <h:outputText value="#{grupo.nome}" />
+        </p:column>
+
+        <p:column style="width: 100px; text-align: center">
+            <p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="confirmacaoExclusao.show(); return false;"
+                             process="@this" update=":frmCadastro:dialogExclusaoGrupo" >
+                <f:setPropertyActionListener target="#{cadastroUsuariosBean.removeGrupo}" value="#{grupo}" />
+            </p:commandButton>
+        </p:column>
+    </p:dataTable>
+    <p:confirmDialog id="dialogExclusaoGrupo" header="Exclusão de Grupos" message="Tem certeza que deseja excluir o grupo"
+                     widgetVar="confirmacaoExclusao">
+        <p:button value="Não" onclick="confirmacaoExclusao.hide();
+                return false;" />
+        <p:commandButton value="Sim" oncomplete="confirmacaoExclusao.hide(); return false;" action="#{cadastroUsuariosBean.removerGrupo}" 
+                         update=":frmCadastro:gruposTable" process="@this"/>			
+    </p:confirmDialog>
+</ui:composition>
